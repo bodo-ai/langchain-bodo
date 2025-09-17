@@ -24,6 +24,7 @@ This example uses the titanic dataset which can be found [here]("https://raw.git
 
 ``` py
 import pandas as pd
+from langchain_bodo import create_bodo_dataframes_agent
 from langchain_openai import OpenAI
 
 df = pd.read_csv("titanic.csv")
@@ -48,6 +49,7 @@ You can also pass Bodo DataFrames directly:
 
 ``` py
 import bodo.pandas as pd
+from langchain-bodo import create_bodo_dataframes_agent
 from langchain_openai import OpenAI
 
 df = pd.read_csv("titanic.csv")
