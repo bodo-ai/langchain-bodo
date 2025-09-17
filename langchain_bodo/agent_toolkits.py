@@ -7,6 +7,8 @@ from typing import Any, Dict, List, Literal, Optional, Sequence, Union, cast
 
 import bodo.pandas as bd
 import pandas as pd
+from bodo.pandas import BodoDataFrame
+from bodo.pandas.utils import BodoLibFallbackWarning
 from langchain.agents import (
     AgentType,
     create_openai_tools_agent,
@@ -70,7 +72,9 @@ def _get_multi_prompt(
     prompt = PromptTemplate.from_template(template)
     partial_prompt = prompt.partial()
     if "dfs_head" in partial_prompt.input_variables:
-        dfs_head = "\n\n".join([d.head(number_of_head_rows).to_markdown() for d in dfs])
+        dfs_head = "\n\n".join(
+            [_bodo_df_to_markdown(d.head(number_of_head_rows)) for d in dfs]
+            )
         partial_prompt = partial_prompt.partial(dfs_head=dfs_head)
     if "num_dfs" in partial_prompt.input_variables:
         partial_prompt = partial_prompt.partial(num_dfs=str(len(dfs)))
@@ -98,7 +102,7 @@ def _get_single_prompt(
 
     partial_prompt = prompt.partial()
     if "df_head" in partial_prompt.input_variables:
-        df_head = str(df.head(number_of_head_rows).to_markdown())
+        df_head = str(_bodo_df_to_markdown(df.head(number_of_head_rows)))
         partial_prompt = partial_prompt.partial(df_head=df_head)
     return partial_prompt
 
@@ -120,7 +124,7 @@ def _get_functions_single_prompt(
     number_of_head_rows: int = 5,
 ) -> ChatPromptTemplate:
     if include_df_in_prompt:
-        df_head = str(df.head(number_of_head_rows).to_markdown())
+        df_head = str(_bodo_df_to_markdown(df.head(number_of_head_rows)))
         suffix = (suffix or FUNCTIONS_WITH_DF).format(df_head=df_head)
     prefix = prefix if prefix is not None else PREFIX_FUNCTIONS
     system_message = SystemMessage(content=prefix + suffix)
@@ -137,7 +141,9 @@ def _get_functions_multi_prompt(
     number_of_head_rows: int = 5,
 ) -> ChatPromptTemplate:
     if include_df_in_prompt:
-        dfs_head = "\n\n".join([d.head(number_of_head_rows).to_markdown() for d in dfs])
+        dfs_head = "\n\n".join(
+            [_bodo_df_to_markdown(d.head(number_of_head_rows)) for d in dfs]
+            )
         suffix = (suffix or FUNCTIONS_WITH_MULTI_DF).format(dfs_head=dfs_head)
     prefix = (prefix or MULTI_DF_PREFIX_FUNCTIONS).format(num_dfs=str(len(dfs)))
     system_message = SystemMessage(content=prefix + suffix)
@@ -151,6 +157,12 @@ def _get_functions_prompt(df: Any, **kwargs: Any) -> ChatPromptTemplate:
         if isinstance(df, list)
         else _get_functions_single_prompt(df, **kwargs)
     )
+
+
+def _bodo_df_to_markdown(df: BodoDataFrame) -> str:
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", BodoLibFallbackWarning)
+        return df.to_markdown()
 
 
 def create_bodo_dataframes_agent(
