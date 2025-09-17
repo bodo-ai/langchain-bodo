@@ -1,12 +1,9 @@
 # flake8: noqa
 
 _BODO_EXPLANATION = """
-Do not evaluate any intermediate DataFrame results unless absolutely necessary to answering the question. Instead use the head of the DataFrame or save to an intermediate result:
+DO NOT evaluate any intermediate DataFrame results unless absolutely necessary to answering the question. Instead use the head of the DataFrame or save to an intermediate result:
 
-BAD example:
->>> df[df["A"] > 2]
-
-GOOD example:
+Good examples:
 >>> df[df["A"] > 2].head(5)
 OR
 >>> _df = df[df["A"] > 2]
