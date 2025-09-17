@@ -33,7 +33,7 @@ PREFIX_FUNCTIONS = """
 You are working with a pandas dataframe in Python. The name of the dataframe is `df`."""
 
 MULTI_DF_PREFIX_FUNCTIONS = """
-You are working with {num_dfs} pandas dataframes in Python named df1, df2, etc. {explanation}."""
+You are working with {num_dfs} pandas dataframes in Python named df1, df2, etc."""
 
 FUNCTIONS_WITH_DF = """
 This is the result of `print(df.head())`:
