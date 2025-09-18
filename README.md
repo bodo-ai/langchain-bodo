@@ -3,6 +3,22 @@
 This package contains the Langchain integration with [Bodo DataFrames](https://github.com/bodo-ai/Bodo),
 an open source, high performance DataFrame library that functions as a drop-in replacement for Pandas.
 
+With just a single-line-of-code change, Bodo DataFrames automatically accelerates and scales Pandas code;
+
+simply replace:
+```py
+import pandas as pd
+```
+with:
+``` py
+import bodo.pandas as pd
+```
+
+Under the hood, Bodo DataFrames uses lazy evaluation to optimize sequences of Pandas operations,
+streams data through operators to enable processing larger-than-memory datasets, and
+leverages MPI-based high-performance computing technology for efficient parallel execution that can
+easily scale from laptop to large cluster.
+
 ## Installation
 
 ```bash
@@ -14,22 +30,24 @@ No additional credentials/configurations are required.
 ## Agent Toolkits
 
 > [!NOTE]
-> Bodo DataFrames agent calls the `Python` agent under the hood, which executes LLM generated Python code.
+> Bodo DataFrames agents call the `Python` agent under the hood, which executes LLM generated Python code.
 > Use with caution.
 
-Bodo DataFrames agent is similar to the [Pandas DataFrame agents](https://python.langchain.com/docs/integrations/tools/pandas/)
-except it converts Pandas DataFrames to Bodo DataFrames, which is ideal for compute intensive operations.
+Bodo DataFrames agents are similar to [Pandas agents](https://python.langchain.com/docs/integrations/tools/pandas/),
+with the agent-generated code operating on Bodo DataFrames to answer questions on large datasets.
+Because Bodo DataFrames is mostly compatible with Pandas,
+it is an ideal target for LLM code generation that's easy to verify, efficient, and scalable beyond the typical limitations of Pandas.
 
 This example uses the titanic dataset which can be found [here]("https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/data/titanic.csv").
 
 ``` py
-import pandas as pd
+import bodo.pandas as pd
 from langchain_bodo import create_bodo_dataframes_agent
 from langchain_openai import OpenAI
 
 df = pd.read_csv("titanic.csv")
 
-agent = create_bodo_dataframes_agent(OpenAI(temperature=0), df, verbose=True, allow_dangerous_code=True)
+agent = create_bodo_dataframes_agent(OpenAI(temperature=0), df, verbose=True)
 
 agent.invoke("What was the average age of the male passengers?")
 ```
@@ -45,16 +63,16 @@ Final Answer: The average age of the male passengers is 30.73 years old.
 > Finished chain.
 ```
 
-You can also pass Bodo DataFrames directly:
+You can also pass Pandas DataFrames directly:
 
 ``` py
-import bodo.pandas as pd
+import pandas
 from langchain-bodo import create_bodo_dataframes_agent
 from langchain_openai import OpenAI
 
-df = pd.read_csv("titanic.csv")
+df = pandas.read_csv("titanic.csv")
 
-agent = create_bodo_dataframes_agent(OpenAI(temperature=0), df, verbose=True, allow_dangerous_code=True)
+agent = create_bodo_dataframes_agent(OpenAI(temperature=0), df, verbose=True)
 ```
 
 For more details refer to [Bodo DataFrames API documentation](https://docs.bodo.ai/latest/api_docs/dataframe_lib/).
