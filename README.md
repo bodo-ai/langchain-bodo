@@ -1,6 +1,6 @@
-# Langchain-Bodo
+# LangChain-Bodo
 
-This package contains the Langchain integration with [Bodo DataFrames](https://github.com/bodo-ai/Bodo),
+This package contains the LangChain integration with [Bodo DataFrames](https://github.com/bodo-ai/Bodo),
 an open source, high performance DataFrame library that functions as a drop-in replacement for Pandas.
 
 With just a single-line-of-code change, Bodo DataFrames automatically accelerates and scales Pandas code;
@@ -63,7 +63,7 @@ Final Answer: The average age of the male passengers is 30.73 years old.
 > Finished chain.
 ```
 
-You can also pass Pandas DataFrames directly:
+You can also pass Pandas DataFrames:
 
 ``` py
 import pandas
