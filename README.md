@@ -33,12 +33,12 @@ No additional credentials/configurations are required.
 > Bodo DataFrames agents call the `Python` agent under the hood, which executes LLM generated Python code.
 > Use with caution.
 
-Bodo DataFrames agents are similar to [Pandas agents](https://python.langchain.com/docs/integrations/tools/pandas/),
-with the agent-generated code operating on Bodo DataFrames to answer questions on large datasets.
+Bodo DataFrames agents are similar to [Pandas agents](https://python.langchain.com/docs/integrations/tools/pandas/)
+except agent-generated code operates on Bodo DataFrames to answer questions on larger datasets.
 Because Bodo DataFrames is mostly compatible with Pandas,
 it is an ideal target for LLM code generation that's easy to verify, efficient, and scalable beyond the typical limitations of Pandas.
 
-This example uses the titanic dataset which can be found [here]("https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/data/titanic.csv").
+This example uses the Titanic dataset which can be found at https://raw.githubusercontent.com/pandas-dev/pandas/main/doc/data/titanic.csv.
 
 ``` py
 import bodo.pandas as pd
