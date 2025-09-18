@@ -63,7 +63,7 @@ Final Answer: The average age of the male passengers is 30.73 years old.
 > Finished chain.
 ```
 
-You can also pass Pandas DataFrames:
+You can also pass one or more Pandas DataFrames to agents:
 
 ``` py
 import pandas
