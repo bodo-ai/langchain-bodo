@@ -66,13 +66,14 @@ Final Answer: The average age of the male passengers is 30.73 years old.
 You can also pass one or more Pandas DataFrames to agents:
 
 ``` py
-import pandas
-from langchain-bodo import create_bodo_dataframes_agent
+from langchain_bodo import create_bodo_dataframes_agent
 from langchain_openai import OpenAI
+import pandas
 
 df = pandas.read_csv("titanic.csv")
+df2 = df.copy()
 
-agent = create_bodo_dataframes_agent(OpenAI(temperature=0), df, verbose=True)
+agent = create_bodo_dataframes_agent(OpenAI(temperature=0), [df, df2], verbose=True)
 ```
 
 For more details refer to [Bodo DataFrames API documentation](https://docs.bodo.ai/latest/api_docs/dataframe_lib/).
